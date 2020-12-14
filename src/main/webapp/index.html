@@ -1,0 +1,92 @@
+
+<div>
+	<input type="text" id="identificador" placeholder="id"/> 
+
+	<input type="text" id="nombre" placeholder="nombre"/> 
+	<input type="date" id="fecha"/>
+
+<br>
+		<br>
+			<button onClick="alta()">Alta</button>
+		
+	<button onClick="modificacion()">Modificación</button>
+	<button onClick="baja()">Baja</button>
+	<button onClick="consultaPorId()">Consulta por id</button>
+	<button onClick="consulta()">Consultar todos</button>
+
+	<div id="listado"></div>
+
+	<script>
+			//const url = "http://localhost:8080";
+			const url = "https://persona-rest.herokuapp.com";
+			
+function consulta(){
+	fetch(url +"/getListPersonas")
+	.then( datos => datos.json())
+	.then( datos => {
+		const codigo2 = "<ul>"+datos.map( o => `<li>${o.id}-${o.nombre}---------${new Date(o.fecha).getUTCDate()}-${new Date(o.fecha).getUTCMonth()+1}-${new Date(o.fecha).getUTCFullYear()}</li>` ).join("")+"</ul>";		
+		document.querySelector("#listado").innerHTML  = codigo2
+	})
+}
+			
+function consultaPorId(){
+	const id = document.querySelector("#identificador").value;
+
+	fetch(url +"/getPersonaById?id="+id)
+	.then( datos => datos.json())
+	.then( datos => {
+		const codigo2 = `${datos.id}-${datos.nombre}---------${new Date(datos.fecha).getUTCDate()}-${new Date(datos.fecha).getUTCMonth()+1}-${new Date(datos.fecha).getUTCFullYear()}`;		
+		document.querySelector("#listado").innerHTML  = codigo2
+	})
+}
+
+
+function alta(){
+	const nombre = document.querySelector("#nombre").value;
+	const fecha = document.querySelector("#fecha").value;
+	
+	
+	fetch(`${url}/createPersona`,{
+	    method:'POST',
+		headers: {
+			"Content-Type": "application/json",
+	         },
+	    body:JSON.stringify({nombre, fecha})
+	  })
+	.then( () => {
+		consulta();
+	})
+}
+function baja(){
+	const id = document.querySelector("#identificador").value
+	
+	fetch(`${url}/removePersona`,{
+	    method:'DELETE',
+		headers: {
+			"Content-Type": "application/json",
+	         },
+	    body:JSON.stringify({id})})
+	.then( datos => {
+		consulta();
+	})
+}
+function modificacion(){
+	const nombre = document.querySelector("#nombre").value
+	const fecha = document.querySelector("#fecha").value
+	const id = document.querySelector("#identificador").value
+	
+	fetch(`${url}/updatePersona`,{
+	    method:'PUT',
+		headers: {
+			"Content-Type": "application/json",
+	         },
+	    body:JSON.stringify({nombre, id})})
+	.then( datos => {
+		consulta();
+	})
+}
+
+consulta();
+
+</script>
+</div>
