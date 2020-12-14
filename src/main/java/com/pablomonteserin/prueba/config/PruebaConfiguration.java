@@ -41,6 +41,9 @@ public class PruebaConfiguration {
 	 
 	      return em;
 	   }
+
+//mysql://bb27b1f65f1d14:a3b66e89@eu-cdbr-west-03.cleardb.net/heroku_80dd5c58a1df479?reconnect=true
+	   
 	@Bean
 	public DataSource dataSource(){
 	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -50,9 +53,9 @@ public class PruebaConfiguration {
 	    dataSource.setUsername( "root" );
 	    dataSource.setPassword( "" );
 	    
-	    dataSource.setUrl("jdbc:mysql://eu-cdbr-west-03.cleardb.net:3306/heroku_a674b4cf275a6fa?serverTimezone=UTC");
-	    dataSource.setUsername( "bc969c062c9d81" );
-	    dataSource.setPassword( "424a2969" );
+	    dataSource.setUrl("jdbc:mysql://eu-cdbr-west-03.cleardb.net:3306/heroku_80dd5c58a1df479?serverTimezone=UTC");
+	    dataSource.setUsername( "bb27b1f65f1d14" );
+	    dataSource.setPassword( "a3b66e89" );
 	    return dataSource;
 	}
 	private Properties additionalProperties() {
